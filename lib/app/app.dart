@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myappoint/screens/homePage/home_page.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({
@@ -12,14 +14,10 @@ class AppPage extends StatefulWidget {
 class _AppPageState extends State<AppPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("My Appointment"),
-        ),
-        body: Container(
-          child: Text(""),
-        ),
+        backgroundColor: const Color(0xff58a2a7),
+        body: HomePage(),
       ),
     );
   }
