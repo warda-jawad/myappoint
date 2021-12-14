@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:myappoint/screens/newTask/new_task.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class HomePage extends StatefulWidget {
@@ -98,24 +99,32 @@ class _HomePageState extends State<HomePage> {
                   height: 45,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.brown,
+                    color: const Color(0xff906269),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                      Center(
-                        child: Text(
-                          "أضف مهمة",
-                          style: TextStyle(
-                            color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NewTask()),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        Center(
+                          child: Text(
+                            "أضف مهمة",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
