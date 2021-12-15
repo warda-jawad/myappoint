@@ -17,6 +17,7 @@ dependencies:
   slide_countdown: ^0.0.7
   nepali_date_picker: ^5.0.0
   day_night_time_picker: ^1.0.3+1
+  flutter_slidable: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:myappoint/screens/newTask/new_task.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -62,10 +63,35 @@ class _HomePageState extends State<HomePage> {
                 width: 600,
                 height: 300,
                 child: ListView.builder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return Showcase(
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Slidable(
+                        startActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              backgroundColor: const Color(0xFFFE4A49),
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: 'حذف',
+                              onPressed: (BuildContext context) {},
+                            ),
+                          ],
+                        ),
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              backgroundColor: const Color(0xFF7BC043),
+                              foregroundColor: Colors.white,
+                              icon: Icons.edit,
+                              label: 'تعديل',
+                              onPressed: (BuildContext context) {},
+                            ),
+                          ],
+                        ),
+                        child: Showcase(
                           key: _one,
                           description: 'إسحب لحذف المهمة',
                           child: const Card(
@@ -75,16 +101,44 @@ class _HomePageState extends State<HomePage> {
                               trailing: Icon(Icons.more_vert),
                             ),
                           ),
-                        );
-                      }
-                      return const Card(
+                        ),
+                      );
+                    }
+                    return Slidable(
+                      startActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            backgroundColor: const Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'حذف',
+                            onPressed: (BuildContext context) {},
+                          ),
+                        ],
+                      ),
+                      endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            backgroundColor: const Color(0xFF7BC043),
+                            foregroundColor: Colors.white,
+                            icon: Icons.edit,
+                            label: 'تعديل',
+                            onPressed: (BuildContext context) {},
+                          ),
+                        ],
+                      ),
+                      child: const Card(
                         child: ListTile(
                           leading: Icon(Icons.access_alarm_outlined),
                           title: Text('المهمة الأولى'),
                           trailing: Icon(Icons.more_vert),
                         ),
-                      );
-                    }),
+                      ),
+                    );
+                  },
+                ),
               ),
               Showcase(
                 overlayPadding: const EdgeInsets.all(10),
@@ -105,7 +159,8 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => NewTask()),
+                        MaterialPageRoute(
+                            builder: (context) => const NewTask()),
                       );
                     },
                     child: Row(
