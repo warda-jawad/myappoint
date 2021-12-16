@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:myappoint/core/constants.dart';
 import 'package:myappoint/screens/newTask/new_task.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -40,14 +41,14 @@ class _HomePageState extends State<HomePage> {
                 margin: const EdgeInsets.only(top: 110, left: 90),
                 child: Text(
                   "صباح الخير وردة،",
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: textTheme.bodyText1,
                 ),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 10, left: 160),
                 child: Text(
                   "أضف أعمال اليوم.!",
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: textTheme.bodyText2,
                 ),
               ),
               Container(
@@ -145,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                   height: 45,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColor,
+                    color: primaryColor,
                   ),
                   child: GestureDetector(
                     onTap: () {
