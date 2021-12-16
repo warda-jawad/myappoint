@@ -144,8 +144,9 @@ class _HomePageState extends State<HomePage> {
                   width: 110,
                   height: 45,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Theme.of(context).primaryColor,
+                  ),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(

@@ -121,10 +121,11 @@ class _NewTaskState extends State<NewTask> {
                               color: Colors.blueGrey,
                             ),
                           ),
-                          Text(_time.format(context),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 20, color: Colors.black)),
+                          Text(
+                            _time.format(context),
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.black),
+                          ),
                         ],
                       ),
                     ),
