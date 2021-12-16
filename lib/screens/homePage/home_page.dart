@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:myappoint/core/constants.dart';
 import 'package:myappoint/screens/newTask/new_task.dart';
 import 'package:showcaseview/showcaseview.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -38,24 +39,16 @@ class _HomePageState extends State<HomePage> {
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 110, left: 90),
-                child: const Text(
+                child: Text(
                   "صباح الخير وردة،",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    color: Colors.white,
-                  ),
+                  style: textTheme.bodyText1,
                 ),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 10, left: 160),
-                child: const Text(
+                child: Text(
                   "أضف أعمال اليوم.!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
+                  style: textTheme.bodyText2,
                 ),
               ),
               Container(
@@ -83,10 +76,10 @@ class _HomePageState extends State<HomePage> {
                           motion: const ScrollMotion(),
                           children: [
                             SlidableAction(
-                              backgroundColor: const Color(0xFF7BC043),
+                              backgroundColor: const Color(0xFFFE4A49),
                               foregroundColor: Colors.white,
                               icon: Icons.edit,
-                              label: 'تعديل',
+                              label: 'حذف',
                               onPressed: (BuildContext context) {},
                             ),
                           ],
@@ -121,10 +114,10 @@ class _HomePageState extends State<HomePage> {
                         motion: const ScrollMotion(),
                         children: [
                           SlidableAction(
-                            backgroundColor: const Color(0xFF7BC043),
+                            backgroundColor: const Color(0xFFFE4A49),
                             foregroundColor: Colors.white,
                             icon: Icons.edit,
-                            label: 'تعديل',
+                            label: 'حذف',
                             onPressed: (BuildContext context) {},
                           ),
                         ],
@@ -153,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                   height: 45,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: const Color(0xff906269),
+                    color: primaryColor,
                   ),
                   child: GestureDetector(
                     onTap: () {
