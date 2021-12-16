@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:myappoint/core/constants.dart';
 
 class NewTask extends StatefulWidget {
   const NewTask({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _NewTaskState extends State<NewTask> {
                   margin: const EdgeInsets.only(top: 90, left: 110),
                   child: Text(
                     " أضف مهمة جديدة !",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: textTheme.bodyText1,
                   ),
                 ),
                 Container(
@@ -132,12 +133,12 @@ class _NewTaskState extends State<NewTask> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 190),
+                  margin: const EdgeInsets.only(top: 190),
                   width: 110,
                   height: 45,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColor,
+                    color: primaryColor,
                   ),
                   child: const Center(
                     child: Text(
