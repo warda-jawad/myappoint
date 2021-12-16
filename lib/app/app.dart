@@ -18,6 +18,23 @@ class _AppPageState extends State<AppPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: const Color(0xff906269),
+        textTheme: const TextTheme(
+          bodyText1: TextStyle(
+            fontSize: 30,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.none,
+          ),
+          bodyText2: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            decoration: TextDecoration.none,
+          ),
+        ),
+      ),
       home: Scaffold(
         backgroundColor: const Color(0xff58a2a7),
         body: ShowCaseWidget(
