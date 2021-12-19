@@ -1,4 +1,4 @@
-import 'dart:ui';
+// import 'dart:ui';
 
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:myappoint/core/constants.dart';
 
 class NewTask extends StatefulWidget {
@@ -18,7 +19,7 @@ class NewTask extends StatefulWidget {
 class _NewTaskState extends State<NewTask> {
   TextEditingController timeinput = TextEditingController();
   TimeOfDay _time = TimeOfDay.now().replacing(minute: 30);
-
+  late DateTime _date = DateTime.now();
   void onTimeChanged(TimeOfDay newTime) => setState(() => _time = newTime);
 
   @override
@@ -89,6 +90,63 @@ class _NewTaskState extends State<NewTask> {
                     ),
                   ),
                 ),
+
+                TextButton(
+                  onPressed: () {
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(2021, 7, 18),
+                        maxTime: DateTime(2028, 7, 18),
+                        theme: const DatePickerTheme(
+                            headerColor: Color(0xffd6297b),
+                            backgroundColor: Color(0xff5a80a5),
+                            itemStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
+                            doneStyle:
+                                TextStyle(color: Colors.white, fontSize: 16)),
+                        onConfirm: (date) {
+                      setState(() {
+                        _date = date;
+                      });
+                    }, currentTime: DateTime.now(), locale: LocaleType.ar);
+                  },
+                  child: Container(
+                    height: 60,
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 25,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffe3f0f4),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.all(20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "يوم المهمة",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                          Text(
+                            "${_date.day}-${_date.month}-${_date.year}",
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                //
                 InkWell(
                   onTap: () async {
                     Navigator.of(context).push(
