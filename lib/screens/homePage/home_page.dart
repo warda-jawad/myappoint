@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:myappoint/core/constants.dart';
+import 'package:myappoint/data/dataBase/data_base_handler.dart';
+import 'package:myappoint/model/task_model.dart';
 import 'package:myappoint/screens/newTask/new_task.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -16,7 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   GlobalKey _one = GlobalKey();
   GlobalKey _two = GlobalKey();
-
+  late DatabaseHandler handler;
   @override
   void initState() {
     super.initState();
@@ -26,6 +28,29 @@ class _HomePageState extends State<HomePage> {
         [_one, _two],
       ),
     );
+    //
+    handler = DatabaseHandler(); //create an instance of DatabaseHandler()
+    handler.initializeDB().whenComplete(() async {
+      //call initalizeDb() to create my database
+      await addTasks();
+      setState(() {});
+    });
+  }
+
+  // insert two tasks manually
+  Future<int> addTasks() async {
+    Task firstTask = Task(
+        title: "تناول الفيتامين",
+        description: "فيتامين سي و اي",
+        date: "sunday",
+        time: "7.0");
+    Task secondTask = Task(
+        title: "قراءة الورد اليومي",
+        description: " قراءة عالاقل ربع جزء ",
+        date: "sunday",
+        time: "8.0");
+    List<Task> listOfTasks = [firstTask, secondTask];
+    return await handler.insertTask(listOfTasks);
   }
 
   @override
@@ -52,84 +77,127 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 10, right: 10),
-                width: 600,
                 height: 300,
-                child: ListView.builder(
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Slidable(
-                        startActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              backgroundColor: const Color(0xFFFE4A49),
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
-                              label: 'حذف',
-                              onPressed: (BuildContext context) {},
+                margin: EdgeInsets.all(10),
+                child: FutureBuilder(
+                  future: handler.retrieveTasks(), // return all data
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Task>> snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index == 0) {
+                            return Dismissible(
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                color: Colors.red,
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: const Icon(Icons.delete_forever),
+                              ),
+                              key: ValueKey<int>(snapshot.data![index].id!),
+                              onDismissed: (DismissDirection direction) async {
+                                await handler
+                                    .deleteTask(snapshot.data![index].id!);
+                                setState(() {
+                                  snapshot.data!.remove(snapshot.data![index]);
+                                });
+                              },
+                              child: Showcase(
+                                key: _one,
+                                description: "إسحب لحذف المهمة",
+                                child: Card(
+                                  child: ListTile(
+                                    contentPadding: const EdgeInsets.all(8.0),
+                                    title: Text(
+                                      snapshot.data![0].title,
+                                      style: const TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      snapshot.data![0].description.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    trailing: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data![0].time.toString(),
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          return Dismissible(
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: const Icon(Icons.delete_forever),
                             ),
-                          ],
-                        ),
-                        endActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              backgroundColor: const Color(0xFFFE4A49),
-                              foregroundColor: Colors.white,
-                              icon: Icons.edit,
-                              label: 'حذف',
-                              onPressed: (BuildContext context) {},
+                            key: ValueKey<int>(snapshot.data![index].id!),
+                            onDismissed: (DismissDirection direction) async {
+                              await handler
+                                  .deleteTask(snapshot.data![index].id!);
+                              setState(() {
+                                snapshot.data!.remove(snapshot.data![index]);
+                              });
+                            },
+                            child: Card(
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.all(8.0),
+                                title: Text(
+                                  snapshot.data![index].title,
+                                  style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  snapshot.data![index].description.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                trailing: Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      snapshot.data![index].time.toString(),
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                        child: Showcase(
-                          key: _one,
-                          description: 'إسحب لحذف المهمة',
-                          child: const Card(
-                            child: ListTile(
-                              leading: Icon(Icons.access_alarm_outlined),
-                              title: Text('المهمة الأولى'),
-                              trailing: Icon(Icons.more_vert),
-                            ),
-                          ),
-                        ),
+                          );
+                        },
                       );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
                     }
-                    return Slidable(
-                      startActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            backgroundColor: const Color(0xFFFE4A49),
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                            label: 'حذف',
-                            onPressed: (BuildContext context) {},
-                          ),
-                        ],
-                      ),
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            backgroundColor: const Color(0xFFFE4A49),
-                            foregroundColor: Colors.white,
-                            icon: Icons.edit,
-                            label: 'حذف',
-                            onPressed: (BuildContext context) {},
-                          ),
-                        ],
-                      ),
-                      child: const Card(
-                        child: ListTile(
-                          leading: Icon(Icons.access_alarm_outlined),
-                          title: Text('المهمة الأولى'),
-                          trailing: Icon(Icons.more_vert),
-                        ),
-                      ),
-                    );
                   },
                 ),
               ),
