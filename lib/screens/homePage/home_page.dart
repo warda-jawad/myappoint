@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (BuildContext context, int index) {
                           if (index == 0) {
                             return Dismissible(
-                              direction: DismissDirection.endToStart,
+                              direction: DismissDirection.startToEnd,
                               background: Container(
                                 color: Colors.red,
                                 alignment: Alignment.centerRight,
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                                   child: ListTile(
                                     contentPadding: const EdgeInsets.all(8.0),
                                     title: Text(
-                                      snapshot.data![0].title,
+                                      snapshot.data![0].title.toString(),
                                       style: const TextStyle(
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold),
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           }
                           return Dismissible(
-                            direction: DismissDirection.endToStart,
+                            direction: DismissDirection.startToEnd,
                             background: Container(
                               color: Colors.red,
                               alignment: Alignment.centerRight,
@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                               child: ListTile(
                                 contentPadding: const EdgeInsets.all(8.0),
                                 title: Text(
-                                  snapshot.data![index].title,
+                                  snapshot.data![index].title.toString(),
                                   style: const TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold),
