@@ -10,11 +10,12 @@ class DatabaseHandler {
     return openDatabase(
       // openDatabase()  is also inside the package sqflite,
       // and it accepts a mandatory String as an argument which will be the path of the database.
-      join(path, 'Tasks.db'), //to make DB, Tasks.db is the name of my database.
+      join(path,
+          'Taskss.db'), //to make DB, Taskss.db is the name of my database.
       onCreate: (database, version) async {
         await database.execute(
           // to create table
-          "CREATE TABLE task(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL,description TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL)",
+          "CREATE TABLE activeTasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL,description TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL)",
         );
       },
       version: 1,
@@ -22,12 +23,12 @@ class DatabaseHandler {
   }
 
   // to insert data
-  Future<int> insertTask(List<Task> task) async {
-    // task is the name of table
+  Future<int> insertTask(List<Task> activeTasks) async {
+    // activeTasks is the name of table
     int result = 0;
     final Database db = await initializeDB();
-    for (var taskk in task) {
-      result = await db.insert('task', taskk.toMap());
+    for (var taskk in activeTasks) {
+      result = await db.insert('activeTasks', taskk.toMap());
     }
     return result;
   }
@@ -36,7 +37,7 @@ class DatabaseHandler {
   Future<List<Task>> retrieveTasks() async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult =
-        await db.query('task'); // task is name of table
+        await db.query('activeTasks'); // activeTasks is name of table
     return queryResult.map((e) => Task.fromMap(e)).toList();
   }
 
@@ -44,7 +45,7 @@ class DatabaseHandler {
   Future<void> deleteTask(int id) async {
     final db = await initializeDB();
     await db.delete(
-      'task', // task is name of table
+      'activeTasks', // activeTasks is name of table
       where: "id = ?",
       whereArgs: [id],
     );
