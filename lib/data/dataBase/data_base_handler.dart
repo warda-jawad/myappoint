@@ -10,8 +10,10 @@ class DatabaseHandler {
     return openDatabase(
       // openDatabase()  is also inside the package sqflite,
       // and it accepts a mandatory String as an argument which will be the path of the database.
-      join(path,
-          'Taskss.db'), //to make DB, Taskss.db is the name of my database.
+      join(
+        path,
+        'Taskss.db',
+      ), //to make DB, Taskss.db is the name of my database.
       onCreate: (database, version) async {
         await database.execute(
           // to create table
@@ -43,7 +45,7 @@ class DatabaseHandler {
 
   // to delete data
   Future<void> deleteTask(int id) async {
-    final db = await initializeDB();
+    final Database db = await initializeDB();
     await db.delete(
       'activeTasks', // activeTasks is name of table
       where: "id = ?",
