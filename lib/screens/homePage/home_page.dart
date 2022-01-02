@@ -16,8 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  GlobalKey _one = GlobalKey();
-  GlobalKey _two = GlobalKey();
+  final GlobalKey _one = GlobalKey();
+  final GlobalKey _two = GlobalKey();
   late DatabaseHandler handler;
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     //
     handler = DatabaseHandler(); //create an instance of DatabaseHandler()
     handler.initializeDB().whenComplete(() async {
-      //call initalizeDb() to create my database
+      //call initializeDb() to create my database
       await addTasks();
       setState(() {});
     });
@@ -103,6 +103,7 @@ class _HomePageState extends State<HomePage> {
                                     .deleteTask(snapshot.data![index].id!);
                                 setState(() {
                                   snapshot.data!.remove(snapshot.data![index]);
+                                  // to remove a dismissed Dismissible widget from the tree
                                 });
                               },
                               child: Showcase(
@@ -196,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       );
                     } else {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
