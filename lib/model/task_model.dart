@@ -5,12 +5,13 @@ class Task {
   final String? date;
   final String? time;
 
-  Task(
-      {this.id,
-      required this.title,
-      required this.description,
-      required this.date,
-      this.time});
+  Task({
+    this.id,
+    required this.title,
+    required this.description,
+    required this.date,
+    this.time,
+  });
 
   Task.fromMap(Map<String, dynamic> res)
       : id = res["id"],
