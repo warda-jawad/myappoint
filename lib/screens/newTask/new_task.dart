@@ -8,6 +8,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:myappoint/core/constants.dart';
+import 'package:myappoint/data/dataBase/data_base_handler.dart';
+import 'package:myappoint/model/task_model.dart';
 
 class NewTask extends StatefulWidget {
   const NewTask({Key? key}) : super(key: key);
@@ -17,9 +19,11 @@ class NewTask extends StatefulWidget {
 }
 
 class _NewTaskState extends State<NewTask> {
-  TextEditingController timeinput = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   TimeOfDay _time = TimeOfDay.now().replacing(minute: 30);
   late DateTime _date = DateTime.now();
+  DatabaseHandler handler = DatabaseHandler();
   void onTimeChanged(TimeOfDay newTime) => setState(() => _time = newTime);
 
   @override
@@ -43,9 +47,10 @@ class _NewTaskState extends State<NewTask> {
                 Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
-                  child: const TextField(
+                  child: TextField(
+                    controller: titleController,
                     maxLength: 20,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       filled: true,
                       fillColor: Color(0xffe3f0f4),
                       focusedBorder: OutlineInputBorder(
@@ -68,9 +73,10 @@ class _NewTaskState extends State<NewTask> {
                 Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                  child: const TextField(
+                  child: TextField(
+                    controller: descriptionController,
                     maxLength: 50,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       filled: true,
                       fillColor: Color(0xffe3f0f4),
                       focusedBorder: OutlineInputBorder(
@@ -90,7 +96,6 @@ class _NewTaskState extends State<NewTask> {
                     ),
                   ),
                 ),
-
                 TextButton(
                   onPressed: () {
                     DatePicker.showDatePicker(context,
@@ -190,21 +195,33 @@ class _NewTaskState extends State<NewTask> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 190),
-                  width: 110,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: primaryColor,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "إضافة",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                GestureDetector(
+                  onTap: () async {
+                    List<Task> newTasks = [
+                      Task(
+                          title: titleController.text,
+                          description: descriptionController.text,
+                          time: _time.toString(),
+                          date: _date.toString())
+                    ];
+                    await handler.insertTask(newTasks);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 90),
+                    width: 110,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: primaryColor,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "إضافة",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),
