@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myappoint/app/app.dart';
+import 'package:myappoint/injection.dart';
 
-void main() => runApp(const AppPage());
+Future<void> main() async {
+  await initGetIt();
+  runApp(AppPage());
+}
