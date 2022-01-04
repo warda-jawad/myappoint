@@ -4,50 +4,63 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHandler {
   Future<Database> initializeDB() async {
-    String path =
-        await getDatabasesPath(); // getDatabasePath() is inside the sqflite,
-    // and it will get the default database location.
+    String path = await getDatabasesPath();
     return openDatabase(
-      // openDatabase()  is also inside the package sqflite,
-      // and it accepts a mandatory String as an argument which will be the path of the database.
       join(
         path,
-        'Taskss.db',
-      ), //to make DB, Taskss.db is the name of my database.
+        'Tasksss.db',
+      ),
       onCreate: (database, version) async {
         await database.execute(
           // to create table
-          "CREATE TABLE activeTasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL,description TEXT NOT NULL, date TEXT NOT NULL, time TEXT NOT NULL)",
+          "CREATE TABLE activeTasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL,description TEXT NOT NULL, date DATE NOT NULL, time TEXT NOT NULL)",
         );
+        await database.execute(
+          // to create table
+          "CREATE TABLE user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,email TEXT NOT NULL,  password TEXT NOT NULL)",
+        );
+        await database.execute(
+            "CREATE TABLE doneTasks(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "title TEXT NOT NULL,description TEXT NOT NULL, date DATE NOT NULL,"
+            " time TEXT NOT NULL,  "
+            "userid INTEGER,"
+            "FOREIGN KEY (userId) REFERENCES user(id) ON DELETE SET NULL )");
       },
       version: 1,
     );
   }
 
-  // to insert data
-  Future<int> insertTask(List<Task> activeTasks) async {
-    // activeTasks is the name of table
+  Future<int> insertTask(List<Task> doneTasks) async {
     int result = 0;
     final Database db = await initializeDB();
-    for (var taskk in activeTasks) {
-      result = await db.insert('activeTasks', taskk.toMap());
+    for (var taskk in doneTasks) {
+      result = await db.insert('doneTasks', taskk.toMap());
     }
     return result;
   }
 
-  //to retrieve all data
+  Future<void> updateTask(List<Task> doneTasks) async {
+    final Database db = await initializeDB();
+    for (var taskk in doneTasks) {
+      await db.update(
+        '  doneTasks',
+        taskk.toMap(),
+        where: 'id = ?',
+        whereArgs: [taskk.id],
+      );
+    }
+  }
+
   Future<List<Task>> retrieveTasks() async {
     final Database db = await initializeDB();
-    final List<Map<String, Object?>> queryResult =
-        await db.query('activeTasks'); // activeTasks is name of table
+    final List<Map<String, Object?>> queryResult = await db.query('doneTasks');
     return queryResult.map((e) => Task.fromMap(e)).toList();
   }
 
-  // to delete data
   Future<void> deleteTask(int id) async {
     final Database db = await initializeDB();
-    await db.delete(
-      'activeTasks', // activeTasks is name of table
+    db.delete(
+      'doneTasks',
       where: "id = ?",
       whereArgs: [id],
     );
