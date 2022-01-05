@@ -8,22 +8,25 @@ class DatabaseHandler {
     return openDatabase(
       join(
         path,
-        'Tasksss.db',
+        'Taskssss.db',
       ),
       onCreate: (database, version) async {
         await database.execute(
-          // to create table
-          "CREATE TABLE activeTasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL,description TEXT NOT NULL, date DATE NOT NULL, time TEXT NOT NULL)",
+          "CREATE TABLE user(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+          "name TEXT NOT NULL,email TEXT NOT NULL,  password TEXT NOT NULL)",
         );
         await database.execute(
-          // to create table
-          "CREATE TABLE user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,email TEXT NOT NULL,  password TEXT NOT NULL)",
+          "CREATE TABLE activeTasks(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          " title TEXT NOT NULL,description TEXT NOT NULL, date DATE NOT NULL, "
+          "time TEXT NOT NULL,"
+          " userId INTEGER,"
+          "FOREIGN KEY (userId) REFERENCES user(id) ON DELETE SET NULL )",
         );
         await database.execute(
             "CREATE TABLE doneTasks(id INTEGER PRIMARY KEY AUTOINCREMENT, "
             "title TEXT NOT NULL,description TEXT NOT NULL, date DATE NOT NULL,"
             " time TEXT NOT NULL,  "
-            "userid INTEGER,"
+            "userId INTEGER,"
             "FOREIGN KEY (userId) REFERENCES user(id) ON DELETE SET NULL )");
       },
       version: 1,
