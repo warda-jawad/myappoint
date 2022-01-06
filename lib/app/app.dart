@@ -28,7 +28,7 @@ class _AppPageState extends State<AppPage> {
             log('onComplete: $index, $key');
           },
           blurValue: 1,
-          builder: Builder(builder: (context) => const HomePage()),
+          builder: Builder(builder: (context) => HomePage()),
           autoPlay: false,
           autoPlayDelay: const Duration(seconds: 3),
           autoPlayLockEnable: false,

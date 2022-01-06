@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:myappoint/core/constants.dart';
 import 'package:myappoint/data/dataBase/data_base_handler.dart';
 import 'package:myappoint/model/task_model.dart';
 import 'package:myappoint/screens/newTask/new_task.dart';
 import 'package:showcaseview/showcaseview.dart';
+
+import '../../injection.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,7 +21,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey _one = GlobalKey();
   final GlobalKey _two = GlobalKey();
-  late DatabaseHandler handler;
+  final DB = sl<DatabaseHandler>();
+
   @override
   void initState() {
     super.initState();
@@ -28,17 +32,15 @@ class _HomePageState extends State<HomePage> {
         [_one, _two],
       ),
     );
-    //
-    handler = DatabaseHandler(); //create an instance of DatabaseHandler()
-    handler.initializeDB().whenComplete(() async {
-      //call initializeDb() to create my database
+
+    DB.initializeDB().whenComplete(() async {
       await addTasks();
       setState(() {});
     });
   }
 
   // insert two tasks manually
-  Future<int> addTasks() async {
+  addTasks() async {
     Task firstTask = Task(
         title: "تناول الفيتامين",
         description: "فيتامين سي و اي",
@@ -50,7 +52,7 @@ class _HomePageState extends State<HomePage> {
         date: "sunday",
         time: "8.0");
     List<Task> listOfTasks = [firstTask, secondTask];
-    return await handler.insertTask(listOfTasks);
+    return await DB.insertTask(listOfTasks);
   }
 
   @override
@@ -78,9 +80,9 @@ class _HomePageState extends State<HomePage> {
               ),
               Container(
                 height: 300,
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 child: FutureBuilder(
-                  future: handler.retrieveTasks(), // return all data
+                  future: DB.retrieveTasks(), // return all data
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Task>> snapshot) {
                     if (snapshot.hasData) {
@@ -99,8 +101,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               key: ValueKey<int>(snapshot.data![index].id!),
                               onDismissed: (DismissDirection direction) async {
-                                await handler
-                                    .deleteTask(snapshot.data![index].id!);
+                                await DB.deleteTask(snapshot.data![index].id!);
                                 setState(() {
                                   snapshot.data!.remove(snapshot.data![index]);
                                   // to remove a dismissed Dismissible widget from the tree
@@ -155,8 +156,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             key: ValueKey<int>(snapshot.data![index].id!),
                             onDismissed: (DismissDirection direction) async {
-                              await handler
-                                  .deleteTask(snapshot.data![index].id!);
+                              await DB.deleteTask(snapshot.data![index].id!);
                               setState(() {
                                 snapshot.data!.remove(snapshot.data![index]);
                               });
@@ -177,8 +177,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 trailing: Container(
-                                  width: 30,
-                                  height: 30,
+                                  width: 60,
+                                  height: 60,
                                   decoration: const BoxDecoration(
                                     color: Colors.red,
                                     shape: BoxShape.circle,
@@ -221,8 +221,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const NewTask()),
+                        MaterialPageRoute(builder: (context) => NewTask()),
                       );
                     },
                     child: Row(
@@ -237,6 +236,8 @@ class _HomePageState extends State<HomePage> {
                             "أضف مهمة",
                             style: TextStyle(
                               color: Colors.white,
+                              //  fontSize: 15,
+                              // decoration: TextDecoration.none,
                             ),
                           ),
                         ),
